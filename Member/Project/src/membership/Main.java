@@ -3,8 +3,9 @@ package membership;
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		
+		MemberManager m = new MemberManager(MemberDAO.getInstance());
+		m.run();
 	}
 
 }

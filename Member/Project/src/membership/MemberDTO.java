@@ -2,13 +2,20 @@ package membership;
 
 public class MemberDTO {
 
+	private int idx;
 	private String id;
 	private String password;
 	private String name;
 	private String email;
 	private String phonenum;
-	private String idx;
 	
+	
+	public int getIdx() {
+		return idx;
+	}
+	public void setIdx(int idx) {
+		this.idx = idx;
+	}
 	public String getId() {
 		return id;
 	}
@@ -39,20 +46,21 @@ public class MemberDTO {
 	public void setPhonenum(String phonenum) {
 		this.phonenum = phonenum;
 	}
-	public String getIdx() {
-		return idx;
-	}
-	public void setIdx(String idx) {
-		this.idx = idx;
-	}
-	public MemberDTO(String id, String password, String name, String email, String phonenum, String idx) {
+	
+	public MemberDTO(int idx, String password, String name, String email, String phonenum,String id ) {
 		super();
+		this.idx = idx;
 		this.id = id;
 		this.password = password;
 		this.name = name;
 		this.email = email;
 		this.phonenum = phonenum;
-		this.idx = idx;
+		
+	}
+	@Override
+	public String toString() {
+		return "MemberDTO [idx=" + idx + ", id=" + id + ", password=" + password + ", name=" + name + ", email=" + email
+				+ ", phonenum=" + phonenum + "]";
 	}
 	
 
