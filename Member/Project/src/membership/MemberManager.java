@@ -22,26 +22,26 @@ public class MemberManager {
 	String user = "hr";
 	String pw = "tiger";
 	
-	void MemberList() {//íšŒì› ì •ë³´ë¦¬ìŠ¤íŠ¸
+	void MemberList() {//È¸¿ø Á¤º¸¸®½ºÆ®
 		Connection con = null;
 		
 		try {
 			con = DriverManager.getConnection(jdbcUrl, user, pw);
 			List<MemberDTO> list = dao.getMemberList(con);
 			
-			System.out.println("íšŒì› ì •ë³´ ë¦¬ìŠ¤íŠ¸");
+			System.out.println("È¸¿ø Á¤º¸ ¸®½ºÆ®");
 			System.out.println("--------------------");
-			System.out.println("íšŒì›ë²ˆí˜¸\t id\t pw\t ì´ë¦„\t ë²ˆí˜¸\t ë©”ì¼");
+			System.out.println("È¸¿ø¹øÈ£\t id\t pw\t ÀÌ¸§\t ¹øÈ£\t ¸ŞÀÏ");
 			System.out.println("--------------------");
 			
 			for(MemberDTO md : list) {
-				System.out.printf("%s\t %s\t %s\t %s\t %s\t %s \n",
-									md.getIdx(),
+				System.out.printf("%s\t %s\t %s\t %s\t %s \n",
 									md.getId(),
 									md.getPassword(),
 									md.getName(),
-									md.getEmail(),
-									md.getPhonenum());
+									md.getPhonenum(),
+									md.getEmail());
+									
 									
 			}
 		} catch (SQLException e) {
@@ -53,37 +53,36 @@ public class MemberManager {
 		Scanner sc = new Scanner(System.in);
 		List<MemberDTO> m = new ArrayList<>();
 		
-		void MemberJoin() {//íšŒì› ê°€ì…
+		void MemberJoin() {//È¸¿ø °¡ÀÔ
 			Connection con = null;
 			try {
 				con = DriverManager.getConnection(jdbcUrl, user, pw);
-				System.out.println("íšŒì›ê°€ì… ì‹œì‘í•©ë‹ˆë‹¤.");
+				System.out.println("È¸¿ø°¡ÀÔ ½ÃÀÛÇÕ´Ï´Ù.");
 				sc.nextLine();
-				int idx = getintInput("idx : ");
+				//int idx = getintInput("idx : ");
 				String id = getStrInput("id : ");
-				System.out.println();
 				String password = getStrInput("password : ");
 				String password2 = getStrInput("password confirm : ");
 				String name = getStrInput("name : ");
-				String email = getStrInput("email : ");
 				String phonenum = getStrInput("phonenum : ");
+				String email = getStrInput("email : ");
 				
 			
 				if(idCheck(id)) {
-					System.out.println("ì¤‘ë³µëœ idì…ë‹ˆë‹¤.");
+					System.out.println("Áßº¹µÈ idÀÔ´Ï´Ù.");
 				} else if (password.equals(password2)) {
-					MemberDTO mem = new MemberDTO(idx, id , password, name, email, phonenum);
+					MemberDTO mem = new MemberDTO(id , password, name,phonenum, email );
 					m.add(mem);
 					int result = dao.inserMemberDTO(con, mem);
 					
 					if(result > 0) {
-						System.out.println("ì…ë ¥ë˜ì—ˆìŠµë‹ˆë‹¤.");
+						System.out.println("ÀÔ·ÂµÇ¾ú½À´Ï´Ù.");
 					} else {
-						System.out.println("ì…ë ¥ ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.");
+						System.out.println("ÀÔ·Â ½ÇÆĞÇÏ¿´½À´Ï´Ù.");
 					}
-					System.out.println(id + "ë‹˜ ê°€ì…ì„ ì¶•í•˜ë“œë¦½ë‹ˆë‹¤.");
+					System.out.println(id + "´Ô °¡ÀÔÀ» ÃàÇÏµå¸³´Ï´Ù.");
 				} else {
-					System.out.println("ë¹„ë°€ë²ˆí˜¸ë¥¼ í™•ì¸í•´ì£¼ì„¸ìš”.");
+					System.out.println("ºñ¹Ğ¹øÈ£¸¦ È®ÀÎÇØÁÖ¼¼¿ä.");
 				}
 				
 			} catch (SQLException e) {
@@ -91,83 +90,74 @@ public class MemberManager {
 			}
 	
 	}
-		private void Login() {// ë¡œê·¸ì¸
+		private void Login() {// ·Î±×ÀÎ
 			sc.nextLine();
 			String id = getStrInput("id : ");
 			String pw = getStrInput("pw : ");
 			
 			MemberDTO member = FindID(id);
 			if(member == null) {
-				System.out.println("ë“±ë¡ë˜ì§€ ì•Šì€ IDì…ë‹ˆë‹¤.");
+				System.out.println("µî·ÏµÇÁö ¾ÊÀº IDÀÔ´Ï´Ù.");
 			} else if(member.getId().equals(pw)) {
-				System.out.println("[" + member.getId() + "]ë‹˜ê»˜ì„œ ë¡œê·¸ì¸ í•˜ì…¨ìŠµë‹ˆë‹¤.");
+				System.out.println("[" + member.getId() + "]´Ô²²¼­ ·Î±×ÀÎ ÇÏ¼Ì½À´Ï´Ù.");
 			} else {
-				System.out.println("ë¹„ë°€ë²ˆí˜¸ê°€ í‹€ë ¸ìŠµë‹ˆë‹¤.");
+				System.out.println("ºñ¹Ğ¹øÈ£°¡ Æ²·È½À´Ï´Ù.");
 			}
 		}
 		
-		void MemberUpdate() {// íšŒì› ì •ë³´ ìˆ˜ì •
+		void MemberUpdate() {// È¸¿ø Á¤º¸ ¼öÁ¤
 			Connection con = null;
-			PreparedStatement pstmt = null;	
 			try {
-				String sql = "UPDATE MEMBER SET ID = ?, PW = ?, NAME = ?, EMAIL = ?, WHERE PHONENUM = ?";
-
+				
 				con = DriverManager.getConnection(jdbcUrl, user, pw);
-				pstmt = con.prepareStatement(sql);
 				
-				System.out.printf("ìˆ˜ì •í•  ì•„ì´ë”” ì…ë ¥: ");
+				System.out.printf("¼öÁ¤ÇÒ ¾ÆÀÌµğ ÀÔ·Â: ");
 				String id = sc.next();
-				System.out.printf("ìˆ˜ì •í•  ë¹„ë°€ë²ˆí˜¸ ì…ë ¥: ");
+				System.out.printf("¼öÁ¤ÇÒ ºñ¹Ğ¹øÈ£ ÀÔ·Â: ");
 				String pw = sc.next();
-				System.out.printf("ìˆ˜ì •í•  ì´ë¦„ ì…ë ¥ : ");
+				System.out.printf("¼öÁ¤ÇÒ ÀÌ¸§ ÀÔ·Â : ");
 				String name = sc.next();
-				System.out.printf("ìˆ˜ì •í•  ì´ë©”ì¼ ì…ë ¥ : ");
-				String email = sc.next();
-				System.out.printf("ìˆ˜ì •í•  í°ë²ˆí˜¸ ì…ë ¥ : ");
+				System.out.printf("¼öÁ¤ÇÒ Æù¹øÈ£ ÀÔ·Â : ");
 				String phonenum = sc.next();
-				pstmt.setString(1, id);
-				pstmt.setString(2, pw);
-				pstmt.setString(3, name);
-				pstmt.setString(4, email);
-				pstmt.setString(5, phonenum);
+				System.out.printf("¼öÁ¤ÇÒ ÀÌ¸ŞÀÏ ÀÔ·Â : ");
+				String email = sc.next();
 				
-				int cnt = pstmt.executeUpdate(); 
-				System.out.println(cnt + "ê±´ì´ ì‹¤í–‰ë˜ì—ˆìŠµë‹ˆë‹¤.");
+				
+				MemberDTO m = new MemberDTO(id, pw, name, phonenum, email);
+				ArrayList<MemberDTO> arr = new ArrayList<MemberDTO>();
+				arr.add(m);
+				
+				System.out.println(m + "°ÇÀÌ ½ÇÇàµÇ¾ú½À´Ï´Ù.");
 			}
 
-			catch (Exception e) {e.printStackTrace();}
-			finally {
-
-				try {				
-					pstmt.close();
-					con.close();
-				} catch (Exception e) {
-
-				}
+			catch (Exception e) { 
 			}
 		}
 			
-		void MemberDrop() {// íšŒì› ì •ë³´ íƒˆí‡´
-			Connection con = null;
-			PreparedStatement pstmt = null;		
-			String sql = "DELETE FROM MEMBER WHERE ID = ?";
+			
+		void MemberDrop() {//È¸¿øÅ»Åğ
+			
+			Connection conn = null;
+			
 			try {
-				con = DriverManager.getConnection(jdbcUrl, user, pw);
-				pstmt = con.prepareStatement(sql);
-				System.out.println("ì‚­ì œí•  ì •ë³´ë¥¼ ì…ë ¥í•˜ì‹œì˜¤");
-				jdbcUrl = sc.next();
-				pstmt.setString(1, jdbcUrl);
-				int cnt = pstmt.executeUpdate(); 
-				System.out.println(cnt);
-			}
-			catch (Exception e) {System.out.println(e.getMessage());}
-			finally {
-				try {
-					pstmt.close();
-					con.close();
-				} catch (Exception e) {
+				conn = DriverManager.getConnection(jdbcUrl, user, pw);
+				MemberList();
+				System.out.println("»èÁ¦¸¦ ¿øÇÏ½Ã´Â È¸¿ø¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+				int idx = sc.nextInt();
+				int result = dao.delMemberDTO(conn, idx);
+				
+				if(result > 0) {
+					System.out.println("»èÁ¦µÇ¾ú½À´Ï´Ù.");
+				} else {
+					System.out.println("»èÁ¦½ÇÆĞ! ÇØ´ç È¸¿ø¹øÈ£ÀÇ Á¤º¸°¡ ¾ø½À´Ï´Ù.");
 				}
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			
+			
 		}
 		public void run() {
 			
@@ -224,14 +214,15 @@ public class MemberManager {
 		}
 		private int getintInput(String msg) {
 			System.out.println(msg);
-			return sc.nextInt();
+			int result = sc.nextInt();
+			sc.nextLine();
+			return result;
 		}
 		private int menu() {
-			System.out.println("í™˜ì˜í•©ë‹ˆë‹¤.");
-			return getNumInput("1.ë¡œê·¸ì¸ 2.íšŒì›ê°€ì… 3.íšŒì› ì •ë³´ ë³´ê¸° 4.íšŒì› ìˆ˜ì • 5.íšŒì› íƒˆí‡´ 0.ì¢…ë£Œ");
+			System.out.println("È¯¿µÇÕ´Ï´Ù.");
+			return getNumInput("1.·Î±×ÀÎ 2.È¸¿ø°¡ÀÔ 3.È¸¿ø Á¤º¸ º¸±â 4.È¸¿ø ¼öÁ¤ 5.È¸¿ø Å»Åğ 0.Á¾·á");
 					
+			
 		}
 	
 }
-
-
